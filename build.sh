@@ -6,7 +6,7 @@ ALPINE_VERSION=3.12
 IMAGE_NAME=failfr8er/radarr
 RADARR_RAW=$(curl -H "Accept: application/vnd.github.v3+json" -s https://api.github.com/repos/radarr/radarr/releases/latest)
 RADARR_VERSION=$(echo "${RADARR_RAW}" | jq -r '.tag_name')
-RADARR_ASSET=$(echo "${RADARR_RAW}" | jq -r '.assets[] | select(.name | endswith(".linux.tar.gz")).browser_download_url')
+RADARR_ASSET=$(echo "${RADARR_RAW}" | jq -r '.assets[] | select(.name | endswith(".linux-musl-core-x64.tar.gz")).browser_download_url')
 
 wget "${RADARR_ASSET}"
 
