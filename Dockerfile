@@ -13,31 +13,30 @@ ARG GID=7878
 # Install required base packages and remove any cache
 RUN apk add --no-cache \
       tini \
-      ca-certificates && \
-    apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-      mono \
-      gosu \
-      curl && \
+      icu-libs \
+      krb5-libs \
+      libgcc \
+      libintl \
+      libssl1.1 \
+      libstdc++ \
+      lttng-ust \
+      numactl \
+      zlib \
+      sqlite \
+      sqlite-libs && \
     apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-      mediainfo \
-      tinyxml2 && \
-    rm -rf /var/tmp/* /var/cache/apk/* && \
-    # Fix mono-bug: https://gitlab.alpinelinux.org/alpine/aports/-/issues/12388
-    ln -s /usr/lib/libmono-native.so.0 /usr/lib/libmono-native.so && \
-    cert-sync /etc/ssl/certs/ca-certificates.crt && \
+      mediainfo && \
     # Create the 'radarr' user and group; ensure it owns all relevant directories
     addgroup -g ${GID} radarr && \
     adduser -D -G radarr -s /bin/sh -u ${UID} radarr && \
     mkdir /config; chown -R ${UID}:${GID} /config && \
     mkdir /media/downloads; chown -R ${UID}:${GID} /media/downloads && \
-    mkdir /media/movies; chown -R ${UID}:${GID} /media/movies && \
-    mkdir -p /tmp/.mono; chown -R ${UID}:${GID} /tmp/.mono
+    mkdir /media/movies; chown -R ${UID}:${GID} /media/movies
 
-ADD --chown=${UID}:${GID} Radarr.master.${RADARR_VERSION}.linux.tar.gz /opt
+ADD --chown=${UID}:${GID} Radarr.master.${RADARR_VERSION}.linux-musl-core-x64.tar.gz /opt
 
 # Publish volumes, ports etc
-ENV XDG_CONFIG_HOME=/tmp
-ENV XDG_CONFIG_DIR=/tmp
+ENV XDG_CONFIG_HOME="/config/xdg"
 VOLUME ["/config", "/media/downloads", "/media/movies"]
 EXPOSE 7878
 USER ${UID}
@@ -45,6 +44,6 @@ WORKDIR /config
 
 # Define default start command
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["mono", "/opt/Radarr/Radarr.exe", "-data /config", "", "-l", "-nobrowser"]
+CMD ["/opt/Radarr/Radarr", "/data=/config", "/nobrowser"]
 
 
