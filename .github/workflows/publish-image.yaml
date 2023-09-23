@@ -3,6 +3,10 @@ name: Publish Radarr
 
 on:
   repository_dispatch:
+  push:
+    paths:
+      - "Dockerfile"
+      - ".github/workflows/*"
   workflow_dispatch:
   schedule:
     - cron: "0 4 * * *"
