@@ -10,15 +10,21 @@ ALPINE_VERSION="latest"
 
 [[ -e "${RADARR_ASSET##*/}" ]] || wget "${RADARR_ASSET}"
 
+# Set Radarr version
+RADARR_VERSION=$(jq -r '.tag_name' <<< "${RADARR_RAW}")
+RADARR_VERSION_MAJOR="${RADARR_VERSION%%.*}"
+RADARR_VERSION_MINOR="${RADARR_VERSION%.*.*}"
+
 docker buildx build \
   --file Dockerfile \
   --cache-from=type=local,src=/tmp/.buildx-cache \
   --cache-to=type=local,dest=/tmp/.buildx-cache \
   --tag ${IMAGE_NAME}:latest \
-  --tag ${IMAGE_NAME}:3 \
   --tag ${IMAGE_NAME}:${RADARR_VERSION} \
   --${1:-"load"} \
   --build-arg ALPINE_VERSION=${ALPINE_VERSION} \
   --build-arg RADARR_VERSION="${RADARR_VERSION:1}" \
   --platform=linux/amd64 \
+  --tag "${IMAGE_NAME}:${RADARR_VERSION_MAJOR}" \
+  --tag "${IMAGE_NAME}:${RADARR_VERSION_MINOR}" \
   .
