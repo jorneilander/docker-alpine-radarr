@@ -12,7 +12,8 @@ ARG GID=7878
 
 # Install required base packages and remove any cache
 RUN apk add --no-cache \
-      tini \
+      bash \
+      curl \
       icu-libs \
       krb5-libs \
       libgcc \
@@ -21,9 +22,10 @@ RUN apk add --no-cache \
       libstdc++ \
       lttng-ust \
       numactl \
-      zlib \
       sqlite \
-      sqlite-libs && \
+      sqlite-libs \
+      tini \
+      zlib && \
     apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
       mediainfo && \
     # Create the 'radarr' user and group; ensure it owns all relevant directories
