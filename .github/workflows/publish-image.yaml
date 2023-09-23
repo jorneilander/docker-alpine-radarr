@@ -63,7 +63,6 @@ jobs:
           RADARR_ASSET=$(echo "${RADARR_RAW}" | jq -r '.assets[] | select(.name | endswith(".linux-musl-core-x64.tar.gz")).browser_download_url')
           ALPINE_VERSION="latest"
 
-          echo ::set-output name=RADARR_VERSION::${RADARR_VERSION}
 
           wget "${RADARR_ASSET}"
           # Set Radarr version
@@ -79,6 +78,8 @@ jobs:
           echo "Building: failfr8er/radarr:${{ steps.vars.outputs.RADARR_VERSION }}"
           echo "Tags: ['latest', '${RADARR_VERSION}', '${RADARR_VERSION_MAJOR}', ${RADARR_VERSION_MINOR}']"
           [[ -n ${DOCKER_PUSH} ]] && echo "Built image will be pushed to Docker Hub"
+
+          echo "RADARR_VERSION=${RADARR_VERSION}" >> $GITHUB_OUTPUT
 
           docker buildx build \
             --file Dockerfile \
