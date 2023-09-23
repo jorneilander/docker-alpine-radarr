@@ -75,8 +75,12 @@ jobs:
             --platform=linux/amd64 \
             .
 
-      - name: Container image scan
-        uses: Azure/container-scan@v0
-        continue-on-error: true
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
         with:
-          image-name: "failfr8er/radarr:${{ steps.vars.outputs.RADARR_VERSION }}"
+          image-ref: "docker.io/failfr8er/radarr:${{ steps.vars.outputs.RADARR_VERSION }}"
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
