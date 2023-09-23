@@ -8,6 +8,11 @@ on:
       - "Dockerfile"
       - ".github/workflows/*"
   workflow_dispatch:
+    inputs:
+      SHELL_XTRACE_ENABLED:
+        type: boolean
+        default: false
+        description: "Shell debugging"
   schedule:
     - cron: "0 4 * * *"
 
@@ -51,6 +56,7 @@ jobs:
         id: vars
         run: |
           set -e
+          [[ "${{ inputs.SHELL_XTRACE_ENABLED }}" = "true" ]] && set -o xtrace
 
           ALPINE_VERSION=3.12
           IMAGE_NAME=failfr8er/radarr
