@@ -75,6 +75,9 @@ jobs:
           DOCKER_PUSH=""
           [[ "${GITHUB_REF_NAME}" = "master" ]] && DOCKER_PUSH="--push"
 
+          # Output user relevant information
+          echo "Building: failfr8er/radarr:${{ steps.vars.outputs.RADARR_VERSION }}"
+          echo "Tags: ['latest', '${RADARR_VERSION}', '${RADARR_VERSION_MAJOR}', ${RADARR_VERSION_MINOR}']"
           [[ -n ${DOCKER_PUSH} ]] && echo "Built image will be pushed to Docker Hub"
 
           docker buildx build \

@@ -15,6 +15,10 @@ RADARR_VERSION=$(jq -r '.tag_name' <<< "${RADARR_RAW}")
 RADARR_VERSION_MAJOR="${RADARR_VERSION%%.*}"
 RADARR_VERSION_MINOR="${RADARR_VERSION%.*.*}"
 
+# Output user relevant information
+echo "Building: failfr8er/radarr:${RADARR_VERSION}"
+echo "Tags: ['latest', '${RADARR_VERSION}', '${RADARR_VERSION_MAJOR}', ${RADARR_VERSION_MINOR}']"
+
 docker buildx build \
   --file Dockerfile \
   --cache-from=type=local,src=/tmp/.buildx-cache \
