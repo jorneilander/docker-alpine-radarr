@@ -3,7 +3,7 @@ ARG ALPINE_VERSION
 
 FROM --platform=${TARGETPLATFORM} alpine:${ALPINE_VERSION}
 LABEL maintainer="Jorn Eilander <jorn.eilander@azorion.com>"
-LABEL Description="Sonarr"
+LABEL description="Sonarr"
 
 # Define version of Sonarr
 ARG RADARR_VERSION
