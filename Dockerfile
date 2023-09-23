@@ -47,5 +47,3 @@ WORKDIR /config
 # Define default start command
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["/opt/Radarr/Radarr", "/data=/config", "/nobrowser"]
-
-
