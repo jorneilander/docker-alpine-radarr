@@ -71,6 +71,12 @@ jobs:
           RADARR_VERSION_MAJOR="${RADARR_VERSION%%.*}"
           RADARR_VERSION_MINOR="${RADARR_VERSION%.*.*}"
 
+          # Set option to push built image
+          DOCKER_PUSH=""
+          [[ "${GITHUB_REF_NAME}" = "master" ]] && DOCKER_PUSH="--push"
+
+          [[ -n ${DOCKER_PUSH} ]] && echo "Built image will be pushed to Docker Hub"
+
           docker buildx build \
             --file Dockerfile \
             --cache-from=type=local,src=/tmp/.buildx-cache \
@@ -83,6 +89,7 @@ jobs:
             --platform=linux/amd64 \
             --tag "${IMAGE_NAME}:${RADARR_VERSION_MAJOR}" \
             --tag "${IMAGE_NAME}:${RADARR_VERSION_MINOR}" \
+            ${DOCKER_PUSH} \
             .
 
       - name: Run Trivy vulnerability scanner
