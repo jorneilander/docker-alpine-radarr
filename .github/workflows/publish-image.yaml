@@ -78,7 +78,7 @@ jobs:
           [[ "${GITHUB_REF_NAME}" = "master" ]] && DOCKER_OUTPUT_TYPE="registry"
 
           # Output user relevant information
-          echo "Building: failfr8er/radarr:${{ steps.vars.outputs.RADARR_VERSION }}"
+          echo "Building: ${IMAGE_NAME}:${RADARR_VERSION}"
           echo "Tags: ['latest', '${RADARR_VERSION}', '${RADARR_VERSION_MAJOR}', ${RADARR_VERSION_MINOR}']"
 
           echo "RADARR_VERSION=${RADARR_VERSION}" >> $GITHUB_OUTPUT
