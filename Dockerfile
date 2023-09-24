@@ -3,9 +3,9 @@ ARG ALPINE_VERSION
 
 FROM --platform=${TARGETPLATFORM} alpine:${ALPINE_VERSION}
 LABEL maintainer="Jorn Eilander <jorn.eilander@azorion.com>"
-LABEL description="Sonarr"
+LABEL description="Radarr"
 
-# Define version of Sonarr
+# Define version of Radarr
 ARG RADARR_VERSION
 ARG UID=7878
 ARG GID=7878
