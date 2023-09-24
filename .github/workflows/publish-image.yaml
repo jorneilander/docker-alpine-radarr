@@ -74,13 +74,12 @@ jobs:
           RADARR_VERSION_MINOR="${RADARR_VERSION%.*.*}"
 
           # Set option to push built image
-          DOCKER_PUSH=""
-          [[ "${GITHUB_REF_NAME}" = "master" ]] && DOCKER_PUSH="--push"
+          DOCKER_OUTPUT_TYPE="docker"
+          [[ "${GITHUB_REF_NAME}" = "master" ]] && DOCKER_OUTPUT_TYPE="registry"
 
           # Output user relevant information
           echo "Building: failfr8er/radarr:${{ steps.vars.outputs.RADARR_VERSION }}"
           echo "Tags: ['latest', '${RADARR_VERSION}', '${RADARR_VERSION_MAJOR}', ${RADARR_VERSION_MINOR}']"
-          [[ -n ${DOCKER_PUSH} ]] && echo "Built image will be pushed to Docker Hub"
 
           echo "RADARR_VERSION=${RADARR_VERSION}" >> $GITHUB_OUTPUT
 
@@ -95,7 +94,7 @@ jobs:
             --build-arg "ALPINE_VERSION=${ALPINE_VERSION}" \
             --build-arg "RADARR_VERSION=${RADARR_VERSION:1}" \
             --platform="linux/amd64" \
-            ${DOCKER_PUSH} \
+            --output=type="${DOCKER_OUTPUT_TYPE}" \
             .
 
       - name: Run Trivy vulnerability scanner
