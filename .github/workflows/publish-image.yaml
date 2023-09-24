@@ -100,7 +100,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "docker.io/failfr8er/radarr:${{ steps.vars.outputs.RADARR_VERSION }}"
+          image-ref: "failfr8er/radarr:${{ steps.vars.outputs.RADARR_VERSION }}"
           format: 'table'
           exit-code: '0'
           ignore-unfixed: true
